@@ -21,10 +21,10 @@ vowleddic = {
 
 @click.command()
 @click.argument('filename', type=click.File('r'))
-@click.option('--output', '-o', type=click.File('w'), default=None, help='Output file to save the name formats')
-@click.option('--advanced', '-a', is_flag=True, default=False, help='Generate advanced name formats with random numbers and special characters')
-@click.option('--super-advanced', '-s', is_flag=True, default=False, help='Generate super advanced name formats with vowel substitutions')
-@click.option('--echo', '-d', is_flag=True, default=True, help='Do not print the generated name formats to the console')
+@click.option('--output', '-o', type=click.File('w'), default=None, help='Output file to save the name formats(default: None)')
+@click.option('--advanced', '-a', is_flag=True, default=False, help='Generate advanced name formats with random numbers and special characters(default: False)')
+@click.option('--super-advanced', '-s', is_flag=True, default=False, help='Generate super advanced name formats with vowel substitutions(default: False)(use --advanced to enable advanced formats)')
+@click.option('--echo/--no-echo', '-d/-nd', default=True, help='Do not print the generated name formats to the console(default: True)(use --no-echo to disable)')
 def generate_name_format(filename, output, advanced, super_advanced, echo):
     result = ''
     """
@@ -77,7 +77,6 @@ def generate_name_format(filename, output, advanced, super_advanced, echo):
         try:
             if output:
                 output.write(result)
-                result = ''
 
         except Exception as e:
             click.echo(f"Error writing to output file: {e}", err=True)
@@ -85,7 +84,8 @@ def generate_name_format(filename, output, advanced, super_advanced, echo):
         
         if echo:
             click.echo(result)
-            result = ''
+
+        result = ''  # Reset result for the next line
 
 
 if __name__ == '__main__':
